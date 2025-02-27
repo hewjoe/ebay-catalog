@@ -1,0 +1,29 @@
+database:
+  host: db
+  port: 5432
+  name: ebay_tracker
+  user: postgres
+  password: postgres
+
+ebay:
+  use_scraping: true
+  request_delay: 3  # Seconds between requests to avoid rate limiting
+
+search:
+  pattern: rtx 3090
+  auction_period: 24  # Hours
+  completed_period: 48  # Hours
+  excluded_terms:
+    - broken
+    - not working
+    - for parts
+    - repair
+    - faulty
+    - defective
+    - dead
+
+daemon:
+  polling_interval: 30  # Minutes
+
+logging:
+  level: INFO 

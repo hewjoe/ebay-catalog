@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: ebay-tracker
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=ebay_tracker
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+    volumes:
+      - ./config.yaml:/app/config.yaml
+    command: --config /app/config.yaml --daemon
+
+  db:
+    image: postgres:14-alpine
+    container_name: ebay-tracker-db
+    environment:
+      - POSTGRES_DB=ebay_tracker
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: ebay-tracker-grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
+  grafana_data: 
