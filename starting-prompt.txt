@@ -1,0 +1,33 @@
+I would like to write a python program that will check ebay for rtx 3090 cards and will publish the data to a postgresql database with fields including, but not limited to:
+
+seller
+
+url
+
+title
+
+search pattern
+
+Item specifics broken into independent indexed fields
+
+Item description from seller
+
+current price
+
+buy it now price
+
+seller rating
+
+number of bids
+
+auction end date/time
+
+The results should filter out any items where the condition or title indicate it is not working. The search should allow for an adjustable time frame which will limit to only auctions that will end in the given time with the default set to 24h. The program should also have the capability to check tracked auctions that have since ended to update how many bids and check the final bid that won the auction. For future reporting requirements, we can persist the related list of bids in another table within our database. 
+
+This program can be started via command line in either an adhoc or daemon mode. Other command line options can include, polling time, auction period remaining, completed auction period, logging level, search patterns, initialize database, database connection details, configuration file, and any other fields that would be helpful. The configuration file flag should also allow me to specify any configurable parameters via yaml style configuration file. 
+
+This data will ultimately be used to configure Grafana dashboards pointing to the database to pull and develop insights on the ideal time and price to get the thing I am searching for (in the initial use case, this will be an rtx 3090 card). After understanding the trends, I will likely add an alert to one of the Grafana panels to notify me when there is an auction nearing its end which has a statistically good deal. I will likely use the search pattern as a drop down to allow my graphs to switch context between items. 
+
+You have creative control over any aspects of the program design that would improve my desired outcome. The code should be well organized and commented, and should pass all standard continuous integration checks. 
+
+You can ask me any clarifying questions as we plan out this program. 

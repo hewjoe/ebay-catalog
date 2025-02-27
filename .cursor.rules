@@ -1,0 +1,122 @@
+# eBay Auction Tracker Project Guidelines
+
+## Project Overview
+
+The eBay Auction Tracker is a Python application that monitors RTX 3090 graphics card auctions on eBay, storing data in PostgreSQL for analysis with Grafana dashboards. The application helps users identify pricing trends and find good deals by tracking auction details, seller information, and bid history.
+
+## Architecture
+
+The application follows a modular architecture with these key components:
+
+1. **Main Module** (`main.py`): Entry point that handles command-line arguments and orchestrates the application flow
+2. **Config Module** (`config.py`): Manages application configuration from both YAML files and command-line arguments
+3. **eBay Interface** (`ebay_interface.py`): Handles eBay API integration and web scraping to extract auction data
+4. **Database Handler** (`db.py`): Manages PostgreSQL connections and operations to store and retrieve auction data
+5. **Models** (`models.py`): Data structures and validation logic
+
+## Development Guidelines
+
+### General Principles
+
+- Follow PEP 8 style guidelines
+- Write comprehensive docstrings for all functions, classes, and modules
+- Use type hints everywhere to improve code clarity and enable static type checking
+- Keep functions small and focused on a single responsibility
+- Implement proper error handling and logging
+
+### eBay Interaction Best Practices
+
+- Respect eBay's robots.txt and terms of service
+- Implement rate limiting to avoid IP bans (minimum 2-3 seconds between requests)
+- Add random delays between requests to avoid detection
+- Use rotating user agents if scaling up
+- Consider implementing proxy rotation for high-volume usage
+
+### Database Best Practices
+
+- Use parameterized queries to prevent SQL injection
+- Implement database connection pooling for efficiency
+- Use transactions appropriately to ensure data integrity
+- Create indexes for commonly queried fields
+- Implement regular database maintenance tasks
+
+### Configuration Management
+
+- Store sensitive information in environment variables, not in code or config files
+- Use configuration files for non-sensitive, environment-specific settings
+- Validate configuration values before using them
+
+## Project Structure
+
+```
+ebay-auction-tracker/
+├── ebay_auction_tracker/  # Main package
+│   ├── __init__.py
+│   ├── main.py            # Entry point
+│   ├── config.py          # Configuration handling
+│   ├── ebay_interface.py  # eBay API/scraping functionality
+│   ├── db.py              # Database operations
+│   ├── models.py          # Data models
+│   └── utils.py           # Helper functions
+├── tests/                 # Unit tests
+├── docker/                # Docker-related files
+├── config.yaml.example    # Example configuration
+├── requirements.txt       # Dependencies
+├── setup.py               # Package setup
+└── README.md              # Documentation
+```
+
+## Feature Development Roadmap
+
+When extending the application, consider these potential features:
+
+1. **Enhanced Filtering**: Add more sophisticated filtering options for listings
+2. **Multiple Search Patterns**: Support tracking multiple types of items simultaneously
+3. **Price Prediction**: Implement ML models to predict final auction prices
+4. **Email/SMS Alerts**: Notify users of good deals or auction endings
+5. **User Interface**: Add a web UI for configuration and monitoring
+6. **eBay Buy API Integration**: Use official eBay APIs for more reliable data acquisition
+7. **Historical Data Analysis**: Implement more advanced statistical analysis of pricing trends
+
+## Common Issues and Solutions
+
+### Web Scraping Challenges
+
+- **Issue**: eBay page structure changes
+  - **Solution**: Implement flexible CSS selectors and regular testing
+  
+- **Issue**: Getting blocked by eBay
+  - **Solution**: Respect rate limits, rotate user agents, consider using proxies
+
+### Database Performance
+
+- **Issue**: Slow queries as the database grows
+  - **Solution**: Review and optimize indexes, implement query optimization
+
+- **Issue**: Connection pool exhaustion
+  - **Solution**: Properly close connections, implement connection pooling
+
+### Docker Environment
+
+- **Issue**: Database initialization fails
+  - **Solution**: Ensure the database service is fully started before attempting to initialize
+
+- **Issue**: Memory issues in containers
+  - **Solution**: Adjust container memory limits in docker-compose.yml
+
+## Testing Guidelines
+
+- Write unit tests for all core functionality
+- Implement integration tests for database operations
+- Use mocking for eBay API/web interactions in tests
+- Consider implementing a test eBay account for end-to-end testing
+- Implement CI/CD pipelines for automated testing
+- Use appropriate test fixtures for database tests
+
+## Security Considerations
+
+- Never store eBay credentials or API keys in the repository
+- Implement proper password handling for database connections
+- Regularly update dependencies to patch security vulnerabilities
+- Consider implementing rate limiting for any APIs you expose
+- Be mindful of data privacy regulations when storing seller/bidder information 
